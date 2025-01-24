@@ -1,4 +1,5 @@
 ﻿using Kajak_Kenu;
+using System.Linq;
 
 List<Kolcsonzes> kolcsonzesek = new();
 string path = @"../../../src";
@@ -13,10 +14,15 @@ Console.WriteLine($"4. feladat:\nÖsszesen {kolcsonzesek.Count} db kölcsönzés
 
 Console.WriteLine("\n5. feladat:\nAdja meg a keresett személyt:");
 string keresett = Console.ReadLine();
-var keresettKolcsonzes = kolcsonzesek.Where(k => k.Nev.Contains(keresett.Replace(",", ""))).ToList();
-foreach (var item in keresettKolcsonzes)
+var keresettKolcsonzes = kolcsonzesek.Where(k => k.Nev.Contains(keresett.Split(' ')[0]) && k.Nev.Contains(keresett.Split(' ')[1])).ToList();
+if (keresettKolcsonzes.Count() == 0) Console.WriteLine("Ez a személy nem kölcsönzött");
+else
 {
-    Console.WriteLine($"");
+    Console.WriteLine("Az illető kölcsönzései:");
+    foreach (var item in keresettKolcsonzes)
+    {
+        Console.WriteLine($"{item.ElvitelOra}:{item.ElvitelPerc} - {item.VisszahozatalOra}:{item.VisszahozatalPerc}");
+    }
 }
 
 
